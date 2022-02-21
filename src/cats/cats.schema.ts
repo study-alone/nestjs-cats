@@ -1,13 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { ApiProperty } from '@nestjs/swagger'
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator'
-import { Document, SchemaOptions } from 'mongoose'
+import { Document } from 'mongoose'
 
-const options: SchemaOptions = {
+@Schema({
 	timestamps: true,
-}
-
-@Schema(options)
+})
 export class Cat extends Document {
 	@ApiProperty({
 		example: 'wowowo11@naver.com',

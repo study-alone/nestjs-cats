@@ -1,3 +1,4 @@
+import { CatsRepository } from './cats.repository'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
@@ -7,11 +8,11 @@ import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class CatsService {
-	constructor(@InjectModel(Cat.name) private readonly catModel: Model<Cat>) {}
+	constructor(private readonly catsRepository: CatsRepository) {}
 
 	async signUp(body: CatRequestDto) {
 		const { email, name, password } = body
-		const isCatExist = await this.catModel.exists({ email })
+		const isCatExist = await this.catsRepository.existsByEmail(email)
 
 		if (isCatExist) {
 			throw new UnauthorizedException(
@@ -21,7 +22,7 @@ export class CatsService {
 
 		const hashedPassword = await bcrypt.hash(password, 10)
 
-		const cat = await this.catModel.create({
+		const cat = await this.catsRepository.create({
 			email,
 			name,
 			password: hashedPassword,

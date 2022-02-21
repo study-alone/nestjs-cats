@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
 import { HttpExceptionFilter } from './common/exceptions/http-exception.filter'
+import { SuccessInterceptor } from './common/interceptors/success.interceptor'
 
 const bootstrap = async () => {
 	const app = await NestFactory.create(AppModule)
@@ -10,6 +11,8 @@ const bootstrap = async () => {
 	app.useGlobalPipes(new ValidationPipe())
 	// 전역 filter 등록
 	app.useGlobalFilters(new HttpExceptionFilter())
+	// 전역 interceptor 등록
+	app.useGlobalInterceptors(new SuccessInterceptor())
 	// CORS 허용
 	app.enableCors({
 		origin: true,
