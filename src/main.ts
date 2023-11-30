@@ -24,6 +24,15 @@ const bootstrap = async () => {
 		.setTitle('C.I.C')
 		.setDescription('cat')
 		.setVersion('1.0.0')
+		.addBearerAuth(
+			{
+				type: 'http',
+				scheme: 'bearer',
+				name: 'JWT',
+				in: 'header',
+			},
+			'access-token',
+		)
 		.build()
 	const document: OpenAPIObject = SwaggerModule.createDocument(app, config)
 	SwaggerModule.setup('docs', app, document)
